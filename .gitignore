@@ -7,6 +7,29 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/main/Dotnet.gitignore
 
+# --- Adições para backend-app (.NET/ASP.NET Core) ---
+# Diretórios de build
+**/bin/
+**/obj/
+
+# IDEs
+.vs/
+.vscode/
+.idea/
+
+# Arquivos de SO
+.DS_Store
+Thumbs.db
+
+# Testes e cobertura
+TestResults/
+*.trx
+*.coverage*
+*.cov
+
+# Logs
+*.log
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
@@ -18,8 +41,6 @@ x86/
 [Aa][Rr][Mm]/
 [Aa][Rr][Mm]64/
 bld/
-[Bb]in/
-[Oo]bj/
 [Ll]og/
 [Ll]ogs/
 
@@ -52,3 +73,9 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Opcional: se sua equipe preferir não versionar este arquivo, descomente a linha abaixo
+# backend-app/Properties/launchSettings.json
+# --- Fim das adições ---
+backend-app/obj/Debug/net10.0/backend-app.AssemblyInfo.cs
+backend-app/obj/Debug/net10.0/backend-app.AssemblyInfoInputs.cache
