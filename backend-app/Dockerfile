@@ -3,7 +3,7 @@ FROM postgres:15
 # Variáveis de ambiente para configuração do PostgreSQL
 ENV POSTGRES_PASSWORD=123
 ENV POSTGRES_USER=postgres
-ENV POSTGRES_DB=initial
+ENV POSTGRES_DB=postgres
 
 # Expõe a porta padrão do PostgreSQL
 EXPOSE 5432
