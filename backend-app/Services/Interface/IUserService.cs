@@ -9,4 +9,6 @@ public interface IUserService
     public UserDTO? GetUserById(int id);
 
     public void DeleteUserById(int id);
+
+    public string? UserLogin(string email, string password);
 }

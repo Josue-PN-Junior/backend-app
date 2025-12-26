@@ -20,8 +20,8 @@ public class UserRepositoryImpl : IUserRepository
         {
             _connection.User.Remove(user);
             _connection.SaveChanges();
-        } 
-        
+        }
+
     }
 
     public UserEntity? GetUserById(int id)
@@ -33,5 +33,13 @@ public class UserRepositoryImpl : IUserRepository
     {
         _connection.User.Add(user);
         _connection.SaveChanges();
+    }
+
+    public UserEntity? GetUserByEmail(string email)
+    {
+        return _connection.User.SingleOrDefault(
+            u => u.email == email
+        );
+
     }
 }

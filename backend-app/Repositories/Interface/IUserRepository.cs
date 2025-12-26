@@ -9,4 +9,6 @@ public interface IUserRepository
     UserEntity? GetUserById(int id);
 
     void DeleteUserById(int id);
+
+    UserEntity? GetUserByEmail(string email);
 }

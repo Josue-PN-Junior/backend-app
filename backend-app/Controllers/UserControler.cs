@@ -44,5 +44,16 @@ namespace backend_app.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        [Route("login")]
+        public IActionResult LoginUser([FromForm] string email,[FromForm] string password)
+        {
+            var login = service.UserLogin(email, password);
+
+            if (login is null) return BadRequest();
+
+            return Ok(login);
+        }
     }
 }

@@ -44,4 +44,15 @@ public class UserServiceImpl : IUserService
         };
 
     }
+
+    public string? UserLogin(string email, string password)
+    {
+        var user = repository.GetUserByEmail(email);
+
+        if (user is null) return null;
+
+        if (user.password != password) return null;
+
+        return "Logado";
+    }
 }
