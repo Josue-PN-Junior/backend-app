@@ -52,6 +52,20 @@ namespace backend_app.Controllers
             return NoContent();
         }
 
+        [HttpPatch]
+        [Route("update/{userId}")]
+        public IActionResult UpdateUserById([FromRoute] int userId, [FromBody] UserUpdateDTO user)
+        {
+            if (userId <= 0)
+                return BadRequest("UserId deve ser maior que zero");
+            
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            service.UpdateUserById(userId, user);
+
+            return NoContent();
+        }
+
         [HttpPost]
         [Route("login")]
         public IActionResult LoginUser([FromForm] UserLoginDTO userLogin)

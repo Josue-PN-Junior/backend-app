@@ -72,7 +72,7 @@ public class UserRepositoryImpl : IUserRepository
         }
         catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx)
         {
-            
+
             // Código 23505 = unique_violation no PostgreSQL
             if (pgEx.SqlState == "23505")
             {
@@ -83,7 +83,7 @@ public class UserRepositoryImpl : IUserRepository
                 }
                 throw new DuplicateKeyException("campo único", "valor duplicado");
             }
-            
+
             throw new DatabaseOperationException($"criação do usuário {user.email}", ex);
         }
         catch (DbUpdateConcurrencyException ex)
@@ -125,5 +125,45 @@ public class UserRepositoryImpl : IUserRepository
             throw new DatabaseOperationException($"busca por email {email}", ex);
         }
 
+    }
+
+    public void UpdateUser(UserEntity user)
+    {
+        try
+        {
+            _connection.User.Update(user);
+            _connection.SaveChanges();
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is PostgresException pgEx)
+        {
+            // Código 23505 = unique_violation no PostgreSQL
+            if (pgEx.SqlState == "23505")
+            {
+                // Verificar qual campo causou o erro
+                if (pgEx.ConstraintName?.Contains("email") == true)
+                {
+                    throw new DuplicateKeyException("email", user.email);
+                }
+                throw new DuplicateKeyException("campo único", "valor duplicado");
+            }
+
+            throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            throw new ConcurrencyException($"atualização do usuário ID: {user.id}");
+        }
+        catch (DbUpdateException ex)
+        {
+            throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
+        }
+        catch (InvalidOperationException ex)
+        {
+            throw new DatabaseConnectionException($"atualização do usuário ID: {user.id}", ex);
+        }
+        catch (Exception ex)
+        {
+            throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
+        }
     }
 }

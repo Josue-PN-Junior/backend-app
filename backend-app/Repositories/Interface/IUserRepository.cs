@@ -10,5 +10,6 @@ public interface IUserRepository
 
     void DeleteUserById(int id);
 
+    void UpdateUser(UserEntity user);
     UserEntity? GetUserByEmail(string email);
 }

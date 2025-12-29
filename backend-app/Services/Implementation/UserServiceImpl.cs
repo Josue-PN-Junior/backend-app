@@ -3,6 +3,7 @@ using backend_app.Models.User;
 using backend_app.Models.User.DTOs;
 using backend_app.Repositories.Interface;
 using backend_app.Services.Interface;
+using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
 namespace backend_app.Services.Implementation;
 
@@ -45,6 +46,19 @@ public class UserServiceImpl : IUserService
             Email = user.email
         };
 
+    }
+
+    public void UpdateUserById(int id, UserUpdateDTO user)
+    {
+        var _user = repository.GetUserById(id)
+            ?? throw new UserNotFoundException($"Id: {id}");
+
+        _user.UpdateUserNameAndNickname(
+            _fullName: user.FullName,
+            _nickname: user.Nickname
+        );
+
+        repository.UpdateUser(_user);
     }
 
     public string UserLogin(string email, string password)

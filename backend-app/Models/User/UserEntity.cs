@@ -24,4 +24,10 @@ public class UserEntity
         this.email = email ?? throw new ArgumentNullException(nameof(email));;
         this.password = password;
     }
+
+    public void UpdateUserNameAndNickname(string? _fullName = null, string? _nickname = null)
+    {
+        this.fullName = _fullName ?? this.fullName;
+        this.nickname = _nickname ?? this.nickname;
+    }
 }

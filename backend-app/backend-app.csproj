@@ -17,6 +17,7 @@
     <Folder Include="Controllers/" />
     <Folder Include="Helpers/" />
     <Folder Include="Helpers/Exceptions/" />
+    <Folder Include="Helpers/RequestExceptions/" />
     <Folder Include="Middlewares/" />
     <Folder Include="Repositories/Implementation/" />
     <Folder Include="Services/Interface/" />

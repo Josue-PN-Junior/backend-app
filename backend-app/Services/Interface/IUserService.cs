@@ -11,5 +11,7 @@ public interface IUserService
 
     public void DeleteUserById(int id);
 
+    public void UpdateUserById(int id, UserUpdateDTO user);
+
     public string UserLogin(string email, string password);
 }
