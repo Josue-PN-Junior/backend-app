@@ -1,6 +1,7 @@
 using System.Net;
 using System.Text.Json;
-using static backend_app.Helpers.Exceptions.CustomizedExceptions;
+using backend_app.Helpers.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace backend_app.Middlewares;
 
@@ -8,11 +9,13 @@ public class GlobalExceptionMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly ILogger<GlobalExceptionMiddleware> _logger;
+    private readonly IWebHostEnvironment _environment;
 
-    public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
+    public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger, IWebHostEnvironment environment)
     {
         _next = next;
         _logger = logger;
+        _environment = environment;
     }
 
     public async Task InvokeAsync(HttpContext context)
@@ -28,28 +31,69 @@ public class GlobalExceptionMiddleware
         }
     }
 
-    private static Task HandleExceptionAsync(HttpContext context, Exception exception)
+    private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
         context.Response.ContentType = "application/json";
 
-        var statusCode = exception switch
+        int statusCode;
+        string message;
+        string? details = null;
+
+        switch (exception)
         {
-            ArgumentException => (int)HttpStatusCode.BadRequest,
-            KeyNotFoundException => (int)HttpStatusCode.NotFound,
-            UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized,
-            UserNotFoundException => (int)HttpStatusCode.Forbidden,
-            InvalidCredentialsException => (int)HttpStatusCode.Unauthorized,
-            _ => (int)HttpStatusCode.InternalServerError
-        };
+            case BaseCustomException customEx:
+                statusCode = customEx.StatusCode;
+                message = _environment.IsDevelopment() ? customEx.DetailedMessage : customEx.ProductionMessage;
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+
+            case DbUpdateConcurrencyException:
+                statusCode = 409;
+                message = _environment.IsDevelopment() ? exception.Message : "Conflito de dados";
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+
+            case DbUpdateException:
+                statusCode = 500;
+                message = _environment.IsDevelopment() ? exception.Message : "Erro interno do servidor";
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+
+
+            case ArgumentException:
+                statusCode = (int)HttpStatusCode.BadRequest;
+                message = _environment.IsDevelopment() ? exception.Message : "Dados inválidos fornecidos";
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+
+            case KeyNotFoundException:
+                statusCode = (int)HttpStatusCode.NotFound;
+                message = _environment.IsDevelopment() ? exception.Message : "Recurso não encontrado";
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+
+            case UnauthorizedAccessException:
+                statusCode = (int)HttpStatusCode.Unauthorized;
+                message = _environment.IsDevelopment() ? exception.Message : "Acesso não autorizado";
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+
+            default:
+                statusCode = (int)HttpStatusCode.InternalServerError;
+                message = _environment.IsDevelopment() ? exception.Message : "Erro interno do servidor";
+                details = _environment.IsDevelopment() ? exception.StackTrace : null;
+                break;
+        }
 
         context.Response.StatusCode = statusCode;
 
         var response = new
         {
             StatusCode = statusCode,
-            Message = exception.Message
+            Message = message,
+            Details = details
         };
 
-        return context.Response.WriteAsync(JsonSerializer.Serialize(response));
+        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
     }
 }

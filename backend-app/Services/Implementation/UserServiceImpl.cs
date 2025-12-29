@@ -1,8 +1,8 @@
+using backend_app.Helpers.Exceptions;
 using backend_app.Models.User;
 using backend_app.Models.User.DTOs;
 using backend_app.Repositories.Interface;
 using backend_app.Services.Interface;
-using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
 namespace backend_app.Services.Implementation;
 
@@ -15,7 +15,7 @@ public class UserServiceImpl : IUserService
         this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
     }
 
-    public void CreatUser(UserCreateDTO user)
+    public void CreateUser(UserCreateDTO user)
     {
         var userEntity = new UserEntity(
                 fullName: user.FullName,
@@ -47,14 +47,13 @@ public class UserServiceImpl : IUserService
 
     }
 
-    public string? UserLogin(string email, string password)
+    public string UserLogin(string email, string password)
     {
-        var user = repository.GetUserByEmail(email);
+        var user = repository.GetUserByEmail(email)
+            ?? throw new LoginExceptions.UserNotFoundException($"Email: {email}");
 
-        if (user is null) throw new InvalidCredentialsException("Verifique os dados");
+        if (user.password != password) throw new LoginExceptions.InvalidCredentialsException($"Senha incorreta para email: {email}");
 
-        if (user.password != password) throw new InvalidCredentialsException("Verifique os dados");
-
-        return "Logado";
+        return $"Logado com {email}";
     }
 }

@@ -5,11 +5,11 @@ namespace backend_app.Services.Interface;
 
 public interface IUserService
 {
-    public void CreatUser(UserCreateDTO user);
+    public void CreateUser(UserCreateDTO user);
 
     public UserDTO? GetUserById(int id);
 
     public void DeleteUserById(int id);
 
-    public string? UserLogin(string email, string password);
+    public string UserLogin(string email, string password);
 }

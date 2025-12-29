@@ -2,17 +2,22 @@ namespace backend_app.Helpers.Exceptions;
 
 public class CustomizedExceptions
 {
-    public class UserNotFoundException : Exception
+    public class UserNotFoundException : BaseCustomException
     {
-        public UserNotFoundException(string parametro) 
-            : base($"Usuário não encontrado: {parametro}")
+        public override int StatusCode => 404;
+
+        public UserNotFoundException(string parameter)
+            : base("Usuário não encontrado", $"Usuário não encontrado para operação: {parameter}")
         {
         }
     }
 
-    public class InvalidCredentialsException : Exception
+    public class EmailAlredyExistException : BaseCustomException
     {
-        public InvalidCredentialsException(string parametro) : base($"Credencias invalidas: {parametro}")
+        public override int StatusCode => 409;
+
+        public EmailAlredyExistException(string parameter)
+            : base("Tente cadastrar outro email", $"E-mail já cadastrado: {parameter}")
         {
         }
     }
