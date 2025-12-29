@@ -15,8 +15,9 @@
 
   <ItemGroup>
     <Folder Include="Controllers/" />
-    <Folder Include="Models/" />
-    <Folder Include="Models/User/" />
+    <Folder Include="Helpers/" />
+    <Folder Include="Helpers/Exceptions/" />
+    <Folder Include="Middlewares/" />
     <Folder Include="Repositories/Implementation/" />
     <Folder Include="Services/Interface/" />
   </ItemGroup>

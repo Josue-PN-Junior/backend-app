@@ -1,3 +1,4 @@
+using backend_app.Middlewares;
 using backend_app.Repositories;
 using backend_app.Repositories.Implementation;
 using backend_app.Repositories.Interface;
@@ -25,6 +26,8 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+app.UseGlobalExceptionMiddleware();
 
 app.UseHttpsRedirection();
 

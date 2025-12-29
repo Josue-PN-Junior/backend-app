@@ -1,6 +1,8 @@
 using backend_app.Models.User;
+using backend_app.Models.User.DTOs;
 using backend_app.Repositories.Interface;
 using backend_app.Services.Interface;
+using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
 namespace backend_app.Services.Implementation;
 
@@ -16,10 +18,10 @@ public class UserServiceImpl : IUserService
     public void CreatUser(UserCreateDTO user)
     {
         var userEntity = new UserEntity(
-                fullName: user.fullName,
-                nickname: user.nickname,
-                email: user.email,
-                password: user.password
+                fullName: user.FullName,
+                nickname: user.Nickname,
+                email: user.Email,
+                password: user.Password
         );
 
         repository.SetUser(userEntity);
@@ -37,10 +39,10 @@ public class UserServiceImpl : IUserService
 
         return new UserDTO
         {
-            id = user.id,
-            fullName = user.fullName,
-            nickname = user.nickname,
-            email = user.email
+            Id = user.id,
+            FullName = user.fullName,
+            Nickname = user.nickname,
+            Email = user.email
         };
 
     }
@@ -49,9 +51,9 @@ public class UserServiceImpl : IUserService
     {
         var user = repository.GetUserByEmail(email);
 
-        if (user is null) return null;
+        if (user is null) throw new InvalidCredentialsException("Verifique os dados");
 
-        if (user.password != password) return null;
+        if (user.password != password) throw new InvalidCredentialsException("Verifique os dados");
 
         return "Logado";
     }

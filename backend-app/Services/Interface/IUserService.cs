@@ -1,4 +1,5 @@
 using backend_app.Models.User;
+using backend_app.Models.User.DTOs;
 
 namespace backend_app.Services.Interface;
 

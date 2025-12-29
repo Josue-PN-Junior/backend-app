@@ -1,5 +1,4 @@
-using System.Data;
-using backend_app.Models.User;
+using backend_app.Models.User.DTOs;
 using backend_app.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +16,12 @@ namespace backend_app.Controllers
         }
 
         [HttpGet]
-        [Route("{id}")]
-        public IActionResult GetUserById([FromRoute] int id)
+        [Route("{userId}")]
+        public IActionResult GetUserById([FromRoute] UserIdDTO userId)
         {
-            var user = service.GetUserById(id);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var user = service.GetUserById(userId.Id);
 
             if (user is null) return BadRequest("Not find");
 
@@ -31,25 +32,31 @@ namespace backend_app.Controllers
         [Route("create")]
         public IActionResult CreatUser(UserCreateDTO user)
         {
+            if(!ModelState.IsValid) return BadRequest(ModelState);
+
             service.CreatUser(user);
 
             return Created();
         }
 
         [HttpDelete]
-        [Route("delete/{id}")]
-        public IActionResult DeleteUserById(int id)
+        [Route("delete/{userId}")]
+        public IActionResult DeleteUserById(UserIdDTO userId)
         {
-            service.DeleteUserById(id);
+            if(!ModelState.IsValid) return BadRequest(ModelState);
 
-            return Ok();
+            service.DeleteUserById(userId.Id);
+
+            return NoContent();
         }
 
         [HttpPost]
         [Route("login")]
-        public IActionResult LoginUser([FromForm] string email,[FromForm] string password)
+        public IActionResult LoginUser([FromForm] UserLoginDTO userLogin)
         {
-            var login = service.UserLogin(email, password);
+            //if(!ModelState.IsValid) return BadRequest(ModelState);
+
+            var login = service.UserLogin(userLogin.Email, userLogin.Password);
 
             if (login is null) return BadRequest();
 
