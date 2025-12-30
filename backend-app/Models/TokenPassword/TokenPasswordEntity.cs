@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend_app.Models.TokenPassword;
 
-[Table("passwordresettokens")]
+[Table("password_reset_tokens")]
 public class TokenPasswordEntity
 {
     [Key]
@@ -18,14 +18,20 @@ public class TokenPasswordEntity
 
     public DateTime Expiration { get; private set; }
 
-    [Column("userid")]
+    [Column("code")]
+    public string Code { get; set; }
+
+    [Column("user_id")]
 
     public int UserId { get; private set; }
 
-    public TokenPasswordEntity(string token, DateTime expiration, int userId)
+    [NotMapped]
+    public bool IsExpired => DateTime.UtcNow > Expiration;
+    public TokenPasswordEntity(string token, DateTime expiration, string code, int userId)
     {
         Token = token;
         Expiration = expiration;
+        Code = code;
         UserId = userId;
     }
 }

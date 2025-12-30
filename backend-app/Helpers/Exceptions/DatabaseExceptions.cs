@@ -41,4 +41,14 @@ public class DatabaseExceptions
         {
         }
     }
+
+    public class DeleteCodeException : BaseCustomException
+    {
+        public override int StatusCode => 404;
+
+        public DeleteCodeException(string operation, Exception innerException)
+            : base("Código inválido ou expirado", $"Erro na operação de banco '{operation}'. Detalhes: {innerException.Message}")
+        {
+        }
+    }
 }

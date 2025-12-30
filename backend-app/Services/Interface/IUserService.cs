@@ -1,4 +1,5 @@
 using backend_app.Models.Generic.DTOs;
+using backend_app.Models.TokenPassword.DTOs;
 using backend_app.Models.User;
 using backend_app.Models.User.DTOs;
 
@@ -19,4 +20,6 @@ public interface IUserService
     public void ChangeEmail(EmailChangeDTO data);
 
     public void RequestResetPassword(EmailDTO email);
+
+    public void VerifyCodeReset(VerifyResetCodeDTO data);
 }

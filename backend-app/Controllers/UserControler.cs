@@ -1,4 +1,5 @@
 using backend_app.Models.Generic.DTOs;
+using backend_app.Models.TokenPassword.DTOs;
 using backend_app.Models.User.DTOs;
 using backend_app.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -96,6 +97,17 @@ namespace backend_app.Controllers
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             service.RequestResetPassword(email);
+
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("password/verify-code")]
+        public IActionResult VerifyCodeReset(VerifyResetCodeDTO code)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            service.VerifyCodeReset(code);
 
             return NoContent();
         }

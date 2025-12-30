@@ -21,4 +21,44 @@ public class CustomizedExceptions
         {
         }
     }
+
+    public class InvalidCodeException : BaseCustomException
+    {
+        public override int StatusCode => 404;
+
+        public InvalidCodeException(string parameter)
+            : base("Código inválido ou expirado", $"Código inválido: {parameter}")
+        {
+        }
+    }
+
+    public class ExpiredCodeException : BaseCustomException
+    {
+        public override int StatusCode => 404;
+
+        public ExpiredCodeException(string parameter)
+            : base("Código inválido ou expirado", $"Código expirou: {parameter}")
+        {
+        }
+    }
+
+    public class UserCodeNotFoundException : BaseCustomException
+    {
+        public override int StatusCode => 404;
+
+        public UserCodeNotFoundException(string parameter)
+            : base("Código inválido ou expirado", $"Usuário não encontrado: {parameter}")
+        {
+        }
+    }
+
+    public class CodeNotFoundException : BaseCustomException
+    {
+        public override int StatusCode => 404;
+
+        public CodeNotFoundException(string parameter)
+            : base("Código inválido ou expirado", $"Código não encontrado: {parameter}")
+        {
+        }
+    }
 }

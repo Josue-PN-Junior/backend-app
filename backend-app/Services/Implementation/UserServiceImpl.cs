@@ -1,6 +1,7 @@
 using backend_app.Helpers.Exceptions;
 using backend_app.Models.Generic.DTOs;
 using backend_app.Models.TokenPassword;
+using backend_app.Models.TokenPassword.DTOs;
 using backend_app.Models.User;
 using backend_app.Models.User.DTOs;
 using backend_app.Repositories.Interface;
@@ -98,14 +99,34 @@ public class UserServiceImpl : IUserService
         {
             var token = Guid.NewGuid().ToString();
             var expiration = DateTime.UtcNow.AddMinutes(10);
+            var code = new Random().Next(1000, 9999).ToString();
 
             tokenRepository.SetTokenPassword(
                 new TokenPasswordEntity(
                     token: token,
                     expiration: expiration,
+                    code: code,
                     userId: _user.id
                 )
             );
         }
+    }
+
+    public void VerifyCodeReset(VerifyResetCodeDTO data)
+    {
+        var _user = repository.GetUserByEmail(data.Email)
+            ?? throw new UserCodeNotFoundException(nameof(data.Email));
+
+        var token = tokenRepository.GetTokenByUserId(_user.id)
+            ?? throw new CodeNotFoundException(nameof(_user.id));
+
+        if (token.IsExpired)
+        {
+            tokenRepository.RemoveTokenPassword(token);
+            throw new ExpiredCodeException(nameof(data.Code));
+        }
+
+        if (!token.Code.Equals(data.Code)) throw new InvalidCodeException(nameof(data.Code));
+
     }
 }
