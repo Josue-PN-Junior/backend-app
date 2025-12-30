@@ -86,7 +86,18 @@ namespace backend_app.Controllers
 
             service.ChangeEmail(data);
 
-            return Ok();
+            return NoContent();
+        }
+
+        [HttpPost]
+        [Route("password/request-reset")]
+        public IActionResult RequestResetPassword([FromBody] EmailDTO email)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            service.RequestResetPassword(email);
+
+            return NoContent();
         }
     }
 }

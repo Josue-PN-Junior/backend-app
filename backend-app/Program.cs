@@ -14,6 +14,7 @@ builder.Services.AddOpenApi();
 // Injeção
 builder.Services.AddScoped<ConnectionDb, ConnectionDb>();
 builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
+builder.Services.AddScoped<ITokenPasswordRepository, TokenPasswordRepositoryImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 
 builder.Services.AddControllers();

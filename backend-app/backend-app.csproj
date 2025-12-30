@@ -19,6 +19,8 @@
     <Folder Include="Helpers/Exceptions/" />
     <Folder Include="Helpers/RequestExceptions/" />
     <Folder Include="Middlewares/" />
+    <Folder Include="Models/TokenPassword/" />
+    <Folder Include="Models/TokenPassword/DTOs/" />
     <Folder Include="Repositories/Implementation/" />
     <Folder Include="Services/Interface/" />
   </ItemGroup>

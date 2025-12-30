@@ -17,4 +17,6 @@ public interface IUserService
     public string UserLogin(string email, string password);
 
     public void ChangeEmail(EmailChangeDTO data);
+
+    public void RequestResetPassword(EmailDTO email);
 }
