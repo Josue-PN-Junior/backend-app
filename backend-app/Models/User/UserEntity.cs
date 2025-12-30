@@ -30,4 +30,9 @@ public class UserEntity
         this.fullName = _fullName ?? this.fullName;
         this.nickname = _nickname ?? this.nickname;
     }
+
+    public void UpdateUserEmail(string _email)
+    {
+        this.email = _email;
+    }
 }

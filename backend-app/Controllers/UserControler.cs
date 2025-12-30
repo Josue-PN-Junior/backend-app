@@ -1,3 +1,4 @@
+using backend_app.Models.Generic.DTOs;
 using backend_app.Models.User.DTOs;
 using backend_app.Services.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -75,6 +76,17 @@ namespace backend_app.Controllers
             var login = service.UserLogin(userLogin.Email, userLogin.Password);
 
             return Ok(login);
+        }
+
+        [HttpPatch]
+        [Route("change-email")]
+        public IActionResult ChangeUserEmail(EmailChangeDTO data)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            service.ChangeEmail(data);
+
+            return Ok();
         }
     }
 }

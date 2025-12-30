@@ -1,8 +1,10 @@
 using backend_app.Helpers.Exceptions;
+using backend_app.Models.Generic.DTOs;
 using backend_app.Models.User;
 using backend_app.Models.User.DTOs;
 using backend_app.Repositories.Interface;
 using backend_app.Services.Interface;
+using Microsoft.AspNetCore.Mvc;
 using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
 namespace backend_app.Services.Implementation;
@@ -69,5 +71,19 @@ public class UserServiceImpl : IUserService
         if (user.password != password) throw new LoginExceptions.InvalidCredentialsException($"Senha incorreta para email: {email}");
 
         return $"Logado com {email}";
+    }
+
+    public void ChangeEmail([FromBody] EmailChangeDTO data)
+    {
+        var _user = repository.GetUserByEmail(data.Email)
+            ?? throw new LoginExceptions.UserNotFoundException($"Email: {data.Email}");
+
+        if (_user.password != data.Password) throw new LoginExceptions.InvalidCredentialsException($"Senha incorreta para email: {data.Email}");
+        
+        _user.UpdateUserEmail(
+            data.NewEmail
+        );
+
+        repository.UpdateUser(_user);
     }
 }
