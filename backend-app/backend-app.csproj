@@ -8,24 +8,23 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.1" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.15.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.15.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers/" />
-    <Folder Include="Helpers/" />
-    <Folder Include="Helpers/Exceptions/" />
-    <Folder Include="Helpers/RequestExceptions/" />
-    <Folder Include="Middlewares/" />
-    <Folder Include="Models/TokenPassword/" />
-    <Folder Include="Models/TokenPassword/DTOs/" />
-    <Folder Include="Repositories/Implementation/" />
-    <Folder Include="Services/Interface/" />
+    <!-- Core Layer -->
+    <Folder Include="Core/Domain/ValueObjects/" />
+    <Folder Include="Core/Application/Services/" />
+    
+    <!-- Infrastructure Layer -->
+    <Folder Include="Infrastructure/Data/Repositories/" />
+    <Folder Include="Infrastructure/ExternalServices/" />
+    <Folder Include="Infrastructure/Security/" />
+    
+    <!-- Presentation Layer -->
+    <Folder Include="Presentation/Validators/" />
   </ItemGroup>
 
 </Project>

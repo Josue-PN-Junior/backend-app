@@ -1,0 +1,35 @@
+namespace backend_app.Core.Domain.Exceptions;
+
+public class LoginExceptions
+{
+    public class UserNotFoundException : BaseCustomException
+    {
+        public override int StatusCode => 401;
+        public UserNotFoundException(
+            string parameter,
+            string? detailedMessage = null
+        ) : base("Credenciais inválidas", detailedMessage ?? $"Usuário não encontrado: {parameter}")
+        {
+        }
+    }
+
+    public class InvalidCredentialsException : BaseCustomException
+    {
+        public override int StatusCode => 401;
+
+        public InvalidCredentialsException(string? detailedMessage = null)
+            : base("Credenciais inválidas", detailedMessage ?? "Senha incorreta fornecida")
+        {
+        }
+    }
+
+    public class TokenFailGenerationException : BaseCustomException
+    {
+        public override int StatusCode => 500;
+
+        public TokenFailGenerationException(string? detailedMessage = null)
+            : base("Erro interno do servidor", detailedMessage ?? "Falha na criação do token")
+        {
+        }
+    }
+}
