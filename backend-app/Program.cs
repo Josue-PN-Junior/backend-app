@@ -1,10 +1,10 @@
 using System.Text;
+using backend_app.Core.Application.Interfaces.Repositories;
+using backend_app.Core.Application.Interfaces.Services;
+using backend_app.Core.Application.Services.Implementation;
+using backend_app.Infrastructure.Data.Repositories.Implementations;
+using backend_app.Infrastructure.ExternalServices;
 using backend_app.Middlewares;
-using backend_app.Repositories;
-using backend_app.Repositories.Implementation;
-using backend_app.Repositories.Interface;
-using backend_app.Services.Implementation;
-using backend_app.Services.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
