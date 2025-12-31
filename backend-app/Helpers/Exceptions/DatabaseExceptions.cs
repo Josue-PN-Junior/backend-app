@@ -7,17 +7,17 @@ public class DatabaseExceptions
         public override int StatusCode => 503;
 
         public DatabaseConnectionException(string operation, Exception innerException)
-            : base("Serviço temporariamente indisponível", $"Erro de conexão com banco durante: {operation}. Detalhes: {innerException.Message}")
+            : base("Service temporarily unavailable", $"Database connection error during: {operation}. Details: {innerException.Message}")
         {
         }
     }
 
     public class DatabaseOperationException : BaseCustomException
     {
-        public override int StatusCode => 500; 
+        public override int StatusCode => 500;
 
         public DatabaseOperationException(string operation, Exception innerException)
-            : base("Erro interno do servidor", $"Erro na operação de banco '{operation}'. Detalhes: {innerException.Message}")
+            : base("Internal server error", $"Error in bank transaction '{operation}'. Details: {innerException.Message}")
         {
         }
     }
@@ -27,7 +27,7 @@ public class DatabaseExceptions
         public override int StatusCode => 409;
 
         public DuplicateKeyException(string field, string value)
-            : base("Conflito de dados", $"Tentativa de inserir valor duplicado no campo '{field}': {value}")
+            : base("Data conflict", $"Attempt to enter duplicate value in the field '{field}': {value}")
         {
         }
     }
@@ -37,7 +37,7 @@ public class DatabaseExceptions
         public override int StatusCode => 409;
 
         public ConcurrencyException(string operation)
-            : base("Conflito de dados", $"Conflito de concorrência durante: {operation}. Os dados foram modificados por outro processo.")
+            : base("Data conflict", $"Concurrency conflict occurred during: {operation}. The data was modified by another process.")
         {
         }
     }
@@ -47,7 +47,7 @@ public class DatabaseExceptions
         public override int StatusCode => 404;
 
         public DeleteCodeException(string operation, Exception innerException)
-            : base("Código inválido ou expirado", $"Erro na operação de banco '{operation}'. Detalhes: {innerException.Message}")
+            : base("Invalid or expired code", $"Error in bank transaction '{operation}'. Details: { innerException.Message}")
         {
         }
     }

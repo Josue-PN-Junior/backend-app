@@ -8,7 +8,7 @@ public class LoginExceptions
         public UserNotFoundException(
             string parameter,
             string? detailedMessage = null
-        ) : base("Credenciais inválidas", detailedMessage ?? $"Usuário não encontrado: {parameter}")
+        ) : base("Invalid credentials", detailedMessage ?? $"User not found: {parameter}")
         {
         }
     }
@@ -18,7 +18,7 @@ public class LoginExceptions
         public override int StatusCode => 401;
 
         public InvalidCredentialsException(string? detailedMessage = null)
-            : base("Credenciais inválidas", detailedMessage ?? "Senha incorreta fornecida")
+            : base("Invalid credentials", detailedMessage ?? "Incorrect password provided")
         {
         }
     }
@@ -28,7 +28,7 @@ public class LoginExceptions
         public override int StatusCode => 500;
 
         public TokenFailGenerationException(string? detailedMessage = null)
-            : base("Erro interno do servidor", detailedMessage ?? "Falha na criação do token")
+            : base("Internal server error", detailedMessage ?? "Token creation failed")
         {
         }
     }

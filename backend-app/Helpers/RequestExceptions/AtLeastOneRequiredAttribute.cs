@@ -21,6 +21,6 @@ public class AtLeastOneRequiredAttribute : ValidationAttribute
             return ValidationResult.Success;
         }
 
-        return new ValidationResult(ErrorMessage ?? "Pelo menos um dos campos deve ser preenchido.");
+        return new ValidationResult(ErrorMessage ?? "At least one of the fields must be filled out.");
     }
 }

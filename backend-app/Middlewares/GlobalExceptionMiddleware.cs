@@ -26,7 +26,7 @@ public class GlobalExceptionMiddleware
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Erro durante a execução");
+            _logger.LogError(ex, "Error during execution.");
             await HandleExceptionAsync(context, ex);
         }
     }
@@ -49,38 +49,38 @@ public class GlobalExceptionMiddleware
 
             case DbUpdateConcurrencyException:
                 statusCode = 409;
-                message = _environment.IsDevelopment() ? exception.Message : "Conflito de dados";
+                message = _environment.IsDevelopment() ? exception.Message : "Data conflict.";
                 details = _environment.IsDevelopment() ? exception.StackTrace : null;
                 break;
 
             case DbUpdateException:
                 statusCode = 500;
-                message = _environment.IsDevelopment() ? exception.Message : "Erro interno do servidor";
+                message = _environment.IsDevelopment() ? exception.Message : "Internal server error.";
                 details = _environment.IsDevelopment() ? exception.StackTrace : null;
                 break;
 
 
             case ArgumentException:
                 statusCode = (int)HttpStatusCode.BadRequest;
-                message = _environment.IsDevelopment() ? exception.Message : "Dados inválidos fornecidos";
+                message = _environment.IsDevelopment() ? exception.Message : "Invalid data provided.";
                 details = _environment.IsDevelopment() ? exception.StackTrace : null;
                 break;
 
             case KeyNotFoundException:
                 statusCode = (int)HttpStatusCode.NotFound;
-                message = _environment.IsDevelopment() ? exception.Message : "Recurso não encontrado";
+                message = _environment.IsDevelopment() ? exception.Message : "Resource not found.";
                 details = _environment.IsDevelopment() ? exception.StackTrace : null;
                 break;
 
             case UnauthorizedAccessException:
                 statusCode = (int)HttpStatusCode.Unauthorized;
-                message = _environment.IsDevelopment() ? exception.Message : "Acesso não autorizado";
+                message = _environment.IsDevelopment() ? exception.Message : "Unauthorized access.";
                 details = _environment.IsDevelopment() ? exception.StackTrace : null;
                 break;
 
             default:
                 statusCode = (int)HttpStatusCode.InternalServerError;
-                message = _environment.IsDevelopment() ? exception.Message : "Erro interno do servidor";
+                message = _environment.IsDevelopment() ? exception.Message : "Internal server error.";
                 details = _environment.IsDevelopment() ? exception.StackTrace : null;
                 break;
         }

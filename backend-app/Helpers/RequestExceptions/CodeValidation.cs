@@ -16,6 +16,6 @@ public class CodeValidation : ValidationAttribute
             }
         }
 
-        return new ValidationResult(ErrorMessage ?? "Code deve ter exatamente 4 dígitos numéricos");
+        return new ValidationResult(ErrorMessage ?? "The code must have exactly 4 numeric digits.");
     }
 }

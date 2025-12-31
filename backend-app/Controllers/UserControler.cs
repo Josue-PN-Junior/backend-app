@@ -25,7 +25,7 @@ namespace backend_app.Controllers
         public IActionResult GetUserById([FromRoute] int userId)
         {
             if (userId <= 0)
-                return BadRequest("UserId deve ser maior que zero");
+                return BadRequest("UserId must be greater than zero.");
 
             var user = service.GetUserById(userId)
                 ?? throw new UserNotFoundException($"Id: {userId}");
@@ -50,7 +50,7 @@ namespace backend_app.Controllers
         public IActionResult DeleteUserById([FromRoute] int userId)
         {
             if (userId <= 0)
-                return BadRequest("UserId deve ser maior que zero");
+                return BadRequest("UserId must be greater than zero.");
 
             service.DeleteUserById(userId);
 
@@ -63,7 +63,7 @@ namespace backend_app.Controllers
         public IActionResult UpdateUserById([FromRoute] int userId, [FromBody] UserUpdateDTO user)
         {
             if (userId <= 0)
-                return BadRequest("UserId deve ser maior que zero");
+                return BadRequest("UserId must be greater than zero.");
             
             if (!ModelState.IsValid) return BadRequest(ModelState);
 

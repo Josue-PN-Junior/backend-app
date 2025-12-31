@@ -7,17 +7,17 @@ public class CustomizedExceptions
         public override int StatusCode => 404;
 
         public UserNotFoundException(string parameter)
-            : base("Usuário não encontrado", $"Usuário não encontrado para operação: {parameter}")
+            : base("User not found", $"User not found for operation: {parameter}")
         {
         }
     }
 
-    public class EmailAlredyExistException : BaseCustomException
+    public class EmailAlreadyExistException : BaseCustomException
     {
         public override int StatusCode => 409;
 
-        public EmailAlredyExistException(string parameter)
-            : base("Tente cadastrar outro email", $"E-mail já cadastrado: {parameter}")
+        public EmailAlreadyExistException(string parameter)
+            : base("Try registering a different email address", $"Email already registered: {parameter}")
         {
         }
     }
@@ -27,7 +27,7 @@ public class CustomizedExceptions
         public override int StatusCode => 404;
 
         public InvalidCodeException(string parameter)
-            : base("Código inválido ou expirado", $"Código inválido: {parameter}")
+            : base("Invalid or expired code", $"Invalid code: {parameter}")
         {
         }
     }
@@ -37,7 +37,7 @@ public class CustomizedExceptions
         public override int StatusCode => 404;
 
         public ExpiredCodeException(string parameter)
-            : base("Código inválido ou expirado", $"Código expirou: {parameter}")
+            : base("Invalid or expired code", $"Code has expired: {parameter}")
         {
         }
     }
@@ -47,7 +47,7 @@ public class CustomizedExceptions
         public override int StatusCode => 404;
 
         public UserCodeNotFoundException(string parameter)
-            : base("Código inválido ou expirado", $"Usuário não encontrado: {parameter}")
+            : base("Invalid or expired code", $"User not found: {parameter}")
         {
         }
     }
@@ -57,7 +57,7 @@ public class CustomizedExceptions
         public override int StatusCode => 404;
 
         public CodeNotFoundException(string parameter)
-            : base("Código inválido ou expirado", $"Código não encontrado: {parameter}")
+            : base("Invalid or expired code", $"Code not found: {parameter}")
         {
         }
     }

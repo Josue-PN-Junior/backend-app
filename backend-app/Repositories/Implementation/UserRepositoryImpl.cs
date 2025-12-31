@@ -29,19 +29,19 @@ public class UserRepositoryImpl : IUserRepository
         }
         catch (DbUpdateConcurrencyException)
         {
-            throw new ConcurrencyException($"deleção do usuário ID: {id}");
+            throw new ConcurrencyException($"Deletion of user ID: {id}");
         }
         catch (DbUpdateException ex)
         {
-            throw new DatabaseConnectionException($"deleção do usuário ID: {id}", ex);
+            throw new DatabaseConnectionException($"Deletion of user ID:{id}", ex);
         }
         catch (InvalidOperationException ex)
         {
-            throw new DatabaseConnectionException($"deleção do usuário ID: {id}", ex);
+            throw new DatabaseConnectionException($"Deletion of user ID: {id}", ex);
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"deleção do usuário ID: {id}", ex);
+            throw new DatabaseOperationException($"Deletion of user ID: {id}", ex);
         }
 
     }
@@ -54,11 +54,11 @@ public class UserRepositoryImpl : IUserRepository
         }
         catch (InvalidOperationException ex)
         {
-            throw new DatabaseConnectionException($"busca do usuário ID {id}", ex);
+            throw new DatabaseConnectionException($"Search for user ID. {id}", ex);
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"busca do usuário ID: {id}", ex);
+            throw new DatabaseOperationException($"Search for user ID.: {id}", ex);
         }
 
     }
@@ -79,28 +79,28 @@ public class UserRepositoryImpl : IUserRepository
                 // Verificar qual campo causou o erro
                 if (pgEx.ConstraintName?.Contains("email") == true)
                 {
-                    throw new DuplicateKeyException("email", user.email);
+                    throw new DuplicateKeyException("email", user.Email);
                 }
-                throw new DuplicateKeyException("campo único", "valor duplicado");
+                throw new DuplicateKeyException("unique field", "duplicate value");
             }
 
-            throw new DatabaseOperationException($"criação do usuário {user.email}", ex);
+            throw new DatabaseOperationException($"creation of user  {user.Email}", ex);
         }
         catch (DbUpdateConcurrencyException)
         {
-            throw new ConcurrencyException($"criação do usuário {user.email}");
+            throw new ConcurrencyException($"creation of user {user.Email}");
         }
         catch (DbUpdateException ex)
         {
-            throw new DatabaseOperationException($"criação do usuário {user.email}", ex);
+            throw new DatabaseOperationException($"creation of user {user.Email}", ex);
         }
         catch (InvalidOperationException ex)
         {
-            throw new DatabaseConnectionException($"criação do usuário {user.email}", ex);
+            throw new DatabaseConnectionException($"creation of user {user.Email}", ex);
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"criação do usuário {user.email}", ex);
+            throw new DatabaseOperationException($"creation of user {user.Email}", ex);
         }
     }
 
@@ -109,20 +109,20 @@ public class UserRepositoryImpl : IUserRepository
         try
         {
             return _connection.User.SingleOrDefault(
-                u => u.email == email
+                u => u.Email == email
             );
         }
         catch (InvalidOperationException ex) when (ex.Message.Contains("more than one"))
         {
-            throw new DatabaseOperationException($"busca por email {email} - dados inconsistentes", ex);
+            throw new DatabaseOperationException($"search by email {email} - inconsistent data", ex);
         }
         catch (InvalidOperationException ex)
         {
-            throw new DatabaseConnectionException($"busca por email {email}", ex);
+            throw new DatabaseConnectionException($"search by email {email}", ex);
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"busca por email {email}", ex);
+            throw new DatabaseOperationException($"search by email {email}", ex);
         }
 
     }
@@ -142,28 +142,28 @@ public class UserRepositoryImpl : IUserRepository
                 // Verificar qual campo causou o erro
                 if (pgEx.ConstraintName?.Contains("email") == true)
                 {
-                    throw new DuplicateKeyException("email", user.email);
+                    throw new DuplicateKeyException("email", user.Email);
                 }
-                throw new DuplicateKeyException("campo único", "valor duplicado");
+                throw new DuplicateKeyException("unique field", "duplicate value");
             }
 
-            throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
+            throw new DatabaseOperationException($"update of user ID: {user.Id}", ex);
         }
         catch (DbUpdateConcurrencyException)
         {
-            throw new ConcurrencyException($"atualização do usuário ID: {user.id}");
+            throw new ConcurrencyException($"update of user ID: {user.Id}");
         }
         catch (DbUpdateException ex)
         {
-            throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
+            throw new DatabaseOperationException($"update of user ID: {user.Id}", ex);
         }
         catch (InvalidOperationException ex)
         {
-            throw new DatabaseConnectionException($"atualização do usuário ID: {user.id}", ex);
+            throw new DatabaseConnectionException($"update of user ID: {user.Id}", ex);
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
+            throw new DatabaseOperationException($"update of user ID: {user.Id}", ex);
         }
     }
 }

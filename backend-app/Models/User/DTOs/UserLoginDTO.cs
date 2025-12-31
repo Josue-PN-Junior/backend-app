@@ -5,11 +5,11 @@ namespace backend_app.Models.User.DTOs;
 public class UserLoginDTO
 {
     [Required]
-    [EmailAddress(ErrorMessage = "Email deve ter um formato válido")]
-    [StringLength(255, ErrorMessage = "Email não pode exceder 255 caracteres")]
+    [EmailAddress(ErrorMessage = "Email must have a valid format.")]
+    [StringLength(255, ErrorMessage = "Email cannot exceed 255 characters.")]
     public required string Email { get; set; }
 
     [Required]
-    [StringLength(100, MinimumLength = 6, ErrorMessage = "Senha deve ter entre 6 e 100 caracteres")]
+    [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters.")]
     public required string Password { get; set; }
 }

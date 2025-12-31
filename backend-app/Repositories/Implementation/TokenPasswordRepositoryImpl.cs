@@ -27,7 +27,7 @@ public class TokenPasswordRepositoryImpl : ITokenPasswordRepository
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"crição de resetToken {resetToken}", ex);
+            throw new DatabaseOperationException($"creation of resetToken. {resetToken}", ex);
         }
 
     }
@@ -42,7 +42,7 @@ public class TokenPasswordRepositoryImpl : ITokenPasswordRepository
         }
         catch (Exception ex)
         {
-            throw new DatabaseOperationException($"encontrar token {id}", ex);
+            throw new DatabaseOperationException($"find token {id}", ex);
         }
     }
 
@@ -55,7 +55,7 @@ public class TokenPasswordRepositoryImpl : ITokenPasswordRepository
         }
         catch (Exception ex)
         {
-            throw new DeleteCodeException($"excluir token {resetToken.Id}", ex);
+            throw new DeleteCodeException($"delete token {resetToken.Id}", ex);
         }
     }
 }

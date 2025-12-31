@@ -47,10 +47,10 @@ public class UserServiceImpl : IUserService
 
         return new UserDTO
         {
-            Id = user.id,
-            FullName = user.fullName,
-            Nickname = user.nickname,
-            Email = user.email
+            Id = user.Id,
+            FullName = user.FullName,
+            Nickname = user.Nickname,
+            Email = user.Email
         };
 
     }
@@ -73,7 +73,7 @@ public class UserServiceImpl : IUserService
         var user = repository.GetUserByEmail(email)
             ?? throw new LoginExceptions.UserNotFoundException($"Email: {email}");
 
-        if (user.password != password) throw new LoginExceptions.InvalidCredentialsException($"Senha incorreta para email: {email}");
+        if (user.Password != password) throw new LoginExceptions.InvalidCredentialsException($"Incorrect password for email: {email}");
 
         var token = tokenService.GenerateToken(user)
             ?? throw new LoginExceptions.TokenFailGenerationException();
@@ -86,7 +86,7 @@ public class UserServiceImpl : IUserService
         var _user = repository.GetUserByEmail(data.Email)
             ?? throw new LoginExceptions.UserNotFoundException($"Email: {data.Email}");
 
-        if (_user.password != data.Password) throw new LoginExceptions.InvalidCredentialsException($"Senha incorreta para email: {data.Email}");
+        if (_user.Password != data.Password) throw new LoginExceptions.InvalidCredentialsException($"Incorrect password for email: {data.Email}");
 
         _user.UpdateUserEmail(
             data.NewEmail
@@ -110,7 +110,7 @@ public class UserServiceImpl : IUserService
                     token: token,
                     expiration: expiration,
                     code: code,
-                    userId: _user.id
+                    userId: _user.Id
                 )
             );
         }
@@ -121,8 +121,8 @@ public class UserServiceImpl : IUserService
         var _user = repository.GetUserByEmail(data.Email)
             ?? throw new UserCodeNotFoundException($"Email: {data.Email}");
 
-        var token = tokenRepository.GetTokenByUserId(_user.id)
-            ?? throw new CodeNotFoundException($"UserId: {_user.id}");
+        var token = tokenRepository.GetTokenByUserId(_user.Id)
+            ?? throw new CodeNotFoundException($"UserId: {_user.Id}");
 
         if (token.IsExpired)
         {
@@ -139,8 +139,8 @@ public class UserServiceImpl : IUserService
         var _user = repository.GetUserByEmail(data.Email)
             ?? throw new UserCodeNotFoundException($"Email: {data.Email}");
 
-        var token = tokenRepository.GetTokenByUserId(_user.id)
-            ?? throw new CodeNotFoundException($"UserId: {_user.id}");
+        var token = tokenRepository.GetTokenByUserId(_user.Id)
+            ?? throw new CodeNotFoundException($"UserId: {_user.Id}");
 
         if (token.IsExpired)
         {

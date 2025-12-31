@@ -16,8 +16,8 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(
             [
-                new Claim("userId", user.id.ToString()),
-                new Claim("email", user.email),
+                new Claim("userId", user.Id.ToString()),
+                new Claim("email", user.Email),
             ]),
             Expires = DateTime.UtcNow.AddHours(3),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

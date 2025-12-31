@@ -6,6 +6,6 @@ public class PasswordResetDTO
 {
 
     [Required]
-    [StringLength(100, MinimumLength = 6, ErrorMessage = "Senha deve ter entre 6 e 100 caracteres")]
+    [StringLength(100, MinimumLength = 6, ErrorMessage = "Password must be between 6 and 100 characters.")]
     public required string NewPassword {get; set;} 
 }

@@ -7,37 +7,42 @@ namespace backend_app.Models.User;
 public class UserEntity
 {
     [Key]
+    [Column("id")]
+    public int Id { get; private set; }
 
-    public int id {get; private set;} 
-    
     [Column("fullname")]
-    public string fullName {get; private set;} 
-    public string? nickname {get; private set;} 
-    public string email {get; private set;} 
+    public string FullName { get; private set; }
 
-    public string password {get; private set;} 
+    [Column("nickname")]
+    public string? Nickname { get; private set; }
+
+    [Column("email")]
+    public string Email { get; private set; }
+
+    [Column("password")]
+    public string Password { get; private set; }
 
     public UserEntity(string fullName, string? nickname, string email, string password)
     {
-        this.fullName = fullName ?? throw new ArgumentNullException(nameof(fullName));;
-        this.nickname = nickname;
-        this.email = email ?? throw new ArgumentNullException(nameof(email));;
-        this.password = password;
+        this.FullName = fullName ?? throw new ArgumentNullException(nameof(fullName)); ;
+        this.Nickname = nickname;
+        this.Email = email ?? throw new ArgumentNullException(nameof(email)); ;
+        this.Password = password;
     }
 
     public void UpdateUserNameAndNickname(string? _fullName = null, string? _nickname = null)
     {
-        this.fullName = _fullName ?? this.fullName;
-        this.nickname = _nickname ?? this.nickname;
+        this.FullName = _fullName ?? this.FullName;
+        this.Nickname = _nickname ?? this.Nickname;
     }
 
     public void UpdateUserEmail(string _email)
     {
-        this.email = _email;
+        this.Email = _email;
     }
 
     public void UpdatePassword(string _password)
     {
-        this.password = _password;
+        this.Password = _password;
     }
 }
