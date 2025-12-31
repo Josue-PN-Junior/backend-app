@@ -15,10 +15,12 @@ public class UserServiceImpl : IUserService
     private readonly IUserRepository repository;
     private readonly ITokenPasswordRepository tokenRepository;
 
-    public UserServiceImpl(IUserRepository repository, ITokenPasswordRepository tokenRepository)
+    private readonly ITokenService tokenService;
+    public UserServiceImpl(IUserRepository repository, ITokenPasswordRepository tokenRepository, ITokenService tokenService)
     {
         this.repository = repository ?? throw new ArgumentNullException(nameof(repository));
         this.tokenRepository = tokenRepository ?? throw new ArgumentNullException(nameof(tokenRepository));
+        this.tokenService = tokenService ?? throw new ArgumentNullException(nameof(tokenService));
     }
 
     public void CreateUser(UserCreateDTO user)
@@ -66,14 +68,17 @@ public class UserServiceImpl : IUserService
         repository.UpdateUser(_user);
     }
 
-    public string UserLogin(string email, string password)
+    public object UserLogin(string email, string password)
     {
         var user = repository.GetUserByEmail(email)
             ?? throw new LoginExceptions.UserNotFoundException($"Email: {email}");
 
         if (user.password != password) throw new LoginExceptions.InvalidCredentialsException($"Senha incorreta para email: {email}");
 
-        return $"Logado com {email}";
+        var token = tokenService.GenerateToken(user)
+            ?? throw new LoginExceptions.TokenFailGenerationException();
+
+        return token;
     }
 
     public void ChangeEmail(EmailChangeDTO data)
@@ -140,7 +145,7 @@ public class UserServiceImpl : IUserService
         if (token.IsExpired)
         {
             tokenRepository.RemoveTokenPassword(token);
-            throw new ExpiredCodeException($"UserId: {data.Code}");
+            throw new ExpiredCodeException($"Email: {data.Email}");
         }
 
         if (!token.Code.Equals(data.Code)) throw new InvalidCodeException($"Code: {data.Code}");

@@ -22,4 +22,14 @@ public class LoginExceptions
         {
         }
     }
+
+    public class TokenFailGenerationException : BaseCustomException
+    {
+        public override int StatusCode => 500;
+
+        public TokenFailGenerationException(string? detailedMessage = null)
+            : base("Erro interno do servidor", detailedMessage ?? "Falha na criação do token")
+        {
+        }
+    }
 }

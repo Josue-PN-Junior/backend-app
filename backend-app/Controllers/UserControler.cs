@@ -2,6 +2,7 @@ using backend_app.Models.Generic.DTOs;
 using backend_app.Models.TokenPassword.DTOs;
 using backend_app.Models.User.DTOs;
 using backend_app.Services.Interface;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
@@ -18,6 +19,7 @@ namespace backend_app.Controllers
             this.service = service ?? throw new ArgumentNullException(nameof(service));
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{userId}")]
         public IActionResult GetUserById([FromRoute] int userId)
@@ -42,6 +44,7 @@ namespace backend_app.Controllers
             return Created();
         }
 
+        [Authorize]
         [HttpDelete]
         [Route("delete/{userId}")]
         public IActionResult DeleteUserById([FromRoute] int userId)
@@ -54,6 +57,7 @@ namespace backend_app.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpPatch]
         [Route("update/{userId}")]
         public IActionResult UpdateUserById([FromRoute] int userId, [FromBody] UserUpdateDTO user)
@@ -74,11 +78,12 @@ namespace backend_app.Controllers
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
-            var login = service.UserLogin(userLogin.Email, userLogin.Password);
+            var token = service.UserLogin(userLogin.Email, userLogin.Password);
 
-            return Ok(login);
+            return Ok(token);
         }
 
+        [Authorize]
         [HttpPatch]
         [Route("change-email")]
         public IActionResult ChangeUserEmail(EmailChangeDTO data)

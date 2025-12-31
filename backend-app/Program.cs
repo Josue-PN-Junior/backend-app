@@ -1,9 +1,12 @@
+using System.Text;
 using backend_app.Middlewares;
 using backend_app.Repositories;
 using backend_app.Repositories.Implementation;
 using backend_app.Repositories.Interface;
 using backend_app.Services.Implementation;
 using backend_app.Services.Interface;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,11 +17,31 @@ builder.Services.AddOpenApi();
 // Injeção
 builder.Services.AddScoped<ConnectionDb, ConnectionDb>();
 builder.Services.AddScoped<IUserRepository, UserRepositoryImpl>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITokenPasswordRepository, TokenPasswordRepositoryImpl>();
 builder.Services.AddScoped<IUserService, UserServiceImpl>();
 
 builder.Services.AddControllers();
 
+var key = Encoding.ASCII.GetBytes("issodeveserumachavedesegurancatopdemias123456789");
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(token =>
+{
+    token.RequireHttpsMetadata = false;
+    token.SaveToken = true;
+    token.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ValidateIssuer = false,
+        ValidateAudience = false
+    };
+
+});
 
 var app = builder.Build();
 
@@ -31,6 +54,9 @@ if (app.Environment.IsDevelopment())
 app.UseGlobalExceptionMiddleware();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

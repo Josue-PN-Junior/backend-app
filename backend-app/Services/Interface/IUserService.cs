@@ -15,7 +15,7 @@ public interface IUserService
 
     public void UpdateUserById(int id, UserUpdateDTO user);
 
-    public string UserLogin(string email, string password);
+    public object UserLogin(string email, string password);
 
     public void ChangeEmail(EmailChangeDTO data);
 
