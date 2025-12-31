@@ -35,4 +35,9 @@ public class UserEntity
     {
         this.email = _email;
     }
+
+    public void UpdatePassword(string _password)
+    {
+        this.password = _password;
+    }
 }

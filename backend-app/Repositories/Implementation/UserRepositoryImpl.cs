@@ -27,7 +27,7 @@ public class UserRepositoryImpl : IUserRepository
                 _connection.SaveChanges();
             }
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
             throw new ConcurrencyException($"deleção do usuário ID: {id}");
         }
@@ -86,7 +86,7 @@ public class UserRepositoryImpl : IUserRepository
 
             throw new DatabaseOperationException($"criação do usuário {user.email}", ex);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
             throw new ConcurrencyException($"criação do usuário {user.email}");
         }
@@ -149,7 +149,7 @@ public class UserRepositoryImpl : IUserRepository
 
             throw new DatabaseOperationException($"atualização do usuário ID: {user.id}", ex);
         }
-        catch (DbUpdateConcurrencyException ex)
+        catch (DbUpdateConcurrencyException)
         {
             throw new ConcurrencyException($"atualização do usuário ID: {user.id}");
         }

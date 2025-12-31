@@ -111,5 +111,16 @@ namespace backend_app.Controllers
 
             return NoContent();
         }
+
+        [HttpPost]
+        [Route("password/reset-password")]
+        public IActionResult ResetPassword([FromBody] ResetPasswordDTO data)
+        {
+            if (!ModelState.IsValid) return BadRequest(ModelState);
+
+            service.ResetPassword(data);
+
+            return NoContent();
+        }
     }
 }

@@ -6,7 +6,6 @@ using backend_app.Models.User;
 using backend_app.Models.User.DTOs;
 using backend_app.Repositories.Interface;
 using backend_app.Services.Interface;
-using Microsoft.AspNetCore.Mvc;
 using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
 namespace backend_app.Services.Implementation;
@@ -77,7 +76,7 @@ public class UserServiceImpl : IUserService
         return $"Logado com {email}";
     }
 
-    public void ChangeEmail([FromBody] EmailChangeDTO data)
+    public void ChangeEmail(EmailChangeDTO data)
     {
         var _user = repository.GetUserByEmail(data.Email)
             ?? throw new LoginExceptions.UserNotFoundException($"Email: {data.Email}");
@@ -115,18 +114,55 @@ public class UserServiceImpl : IUserService
     public void VerifyCodeReset(VerifyResetCodeDTO data)
     {
         var _user = repository.GetUserByEmail(data.Email)
-            ?? throw new UserCodeNotFoundException(nameof(data.Email));
+            ?? throw new UserCodeNotFoundException($"Email: {data.Email}");
 
         var token = tokenRepository.GetTokenByUserId(_user.id)
-            ?? throw new CodeNotFoundException(nameof(_user.id));
+            ?? throw new CodeNotFoundException($"UserId: {_user.id}");
 
         if (token.IsExpired)
         {
             tokenRepository.RemoveTokenPassword(token);
-            throw new ExpiredCodeException(nameof(data.Code));
+            throw new ExpiredCodeException($"Code: {data.Code}");
         }
 
-        if (!token.Code.Equals(data.Code)) throw new InvalidCodeException(nameof(data.Code));
+        if (!token.Code.Equals(data.Code)) throw new InvalidCodeException($"Code: {data.Code}");
 
+    }
+
+    public void ResetPassword(ResetPasswordDTO data)
+    {
+        var _user = repository.GetUserByEmail(data.Email)
+            ?? throw new UserCodeNotFoundException($"Email: {data.Email}");
+
+        var token = tokenRepository.GetTokenByUserId(_user.id)
+            ?? throw new CodeNotFoundException($"UserId: {_user.id}");
+
+        if (token.IsExpired)
+        {
+            tokenRepository.RemoveTokenPassword(token);
+            throw new ExpiredCodeException($"UserId: {data.Code}");
+        }
+
+        if (!token.Code.Equals(data.Code)) throw new InvalidCodeException($"Code: {data.Code}");
+
+        _user.UpdatePassword(data.NewPassword);
+
+        try
+        {
+            repository.UpdateUser(_user);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        try
+        {
+            tokenRepository.RemoveTokenPassword(token);
+
+        }
+        catch (Exception)
+        {
+        }
     }
 }

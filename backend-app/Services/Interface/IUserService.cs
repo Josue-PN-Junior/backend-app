@@ -22,4 +22,6 @@ public interface IUserService
     public void RequestResetPassword(EmailDTO email);
 
     public void VerifyCodeReset(VerifyResetCodeDTO data);
+
+    public void ResetPassword(ResetPasswordDTO data);
 }
