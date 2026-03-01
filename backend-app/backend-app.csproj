@@ -26,6 +26,15 @@
     <Folder Include="Models/TokenPassword/DTOs/" />
     <Folder Include="Repositories/Implementation/" />
     <Folder Include="Services/Interface/" />
+    <Folder Include="Core/Application/DTOs/TokenPassword/" />
+    <Folder Include="Core/Application/DTOs/User/" />
+    <Folder Include="Core/Application/Interfaces/Repositories/" />
+    <Folder Include="Core/Application/Interfaces/Services/" />
+    <Folder Include="Core/Application/Services/Implementation/" />
+    <Folder Include="Core/Domain/Entities/" />
+    <Folder Include="Infrastructure/ExternalServices/" />
+    <Folder Include="Models/User/DTOs/" />
+    <Folder Include="Presentation/Controllers/" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,11 @@
 using System.Text;
+using System.Threading.RateLimiting;
+using backend_app.Core.Application.Interfaces.Repositories;
+using backend_app.Core.Application.Interfaces.Services;
+using backend_app.Core.Application.Services.Implementation;
+using backend_app.Infrastructure.Data.Repositories.Implementations;
+using backend_app.Infrastructure.ExternalServices;
 using backend_app.Middlewares;
-using backend_app.Repositories;
-using backend_app.Repositories.Implementation;
-using backend_app.Repositories.Interface;
-using backend_app.Services.Implementation;
-using backend_app.Services.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -25,6 +26,15 @@ builder.Services.AddControllers();
 
 var key = Encoding.ASCII.GetBytes("issodeveserumachavedesegurancatopdemias123456789");
 
+static string GetKey(HttpContext context)
+{
+    var userId = context.User.Identity?.IsAuthenticated == true
+        ? context.User.Identity.Name
+        : context.Connection.RemoteIpAddress?.ToString();
+
+    return $"{userId}_{context.Request.Path}";
+}
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -43,17 +53,45 @@ builder.Services.AddAuthentication(x =>
 
 });
 
+builder.Services.AddRateLimiter(options =>
+{
+    options.AddPolicy("ResetPassword", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: GetKey(context),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromMinutes(10),
+            })
+    );
+
+    options.AddPolicy("Login", context =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: GetKey(context),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                PermitLimit = 5,
+                Window = TimeSpan.FromHours(1),
+            })
+    );
+
+    options.RejectionStatusCode = StatusCodes.Status429TooManyRequests;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+} else
+{
+    app.UseHttpsRedirection();
 }
 
-app.UseGlobalExceptionMiddleware();
+app.UseRateLimiter();
 
-app.UseHttpsRedirection();
+app.UseGlobalExceptionMiddleware();
 
 app.UseAuthentication();
 app.UseAuthorization();

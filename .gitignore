@@ -11,6 +11,8 @@
 # Diretórios de build
 **/bin/
 **/obj/
+**/backend-app/obj/
+**/backend-app/bin/
 
 # IDEs
 .vs/
