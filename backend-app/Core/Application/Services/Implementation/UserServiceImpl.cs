@@ -95,6 +95,9 @@ public class UserServiceImpl : IUserService
 
     public void RequestResetPassword(EmailDTO email)
     {
+
+        //throw new TooManyRequestExeption("teste");
+
         var _user = repository.GetUserByEmail(email.Email);
 
         if (_user != null)

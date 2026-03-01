@@ -3,6 +3,7 @@ using backend_app.Core.Application.DTOs.User;
 using backend_app.Core.Application.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using static backend_app.Helpers.Exceptions.CustomizedExceptions;
 
 namespace backend_app.Controllers
@@ -73,7 +74,8 @@ namespace backend_app.Controllers
 
         [HttpPost]
         [Route("login")]
-        public IActionResult LoginUser([FromForm] UserLoginDTO userLogin)
+        [EnableRateLimiting("Login")]
+        public IActionResult LoginUser([FromBody] UserLoginDTO userLogin)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
@@ -96,6 +98,7 @@ namespace backend_app.Controllers
 
         [HttpPost]
         [Route("password/request-reset")]
+        [EnableRateLimiting("ResetPassword")]
         public IActionResult RequestResetPassword([FromBody] EmailDTO email)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -107,6 +110,7 @@ namespace backend_app.Controllers
 
         [HttpPost]
         [Route("password/verify-code")]
+        [EnableRateLimiting("ResetPassword")]
         public IActionResult VerifyCodeReset(VerifyResetCodeDTO code)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -118,6 +122,7 @@ namespace backend_app.Controllers
 
         [HttpPost]
         [Route("password/reset-password")]
+        [EnableRateLimiting("ResetPassword")]
         public IActionResult ResetPassword([FromBody] ResetPasswordDTO data)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);

@@ -11,6 +11,7 @@
 # Diretórios de build
 **/bin/
 **/obj/
+backend-app/obj/Debug/net10/
 
 # IDEs
 .vs/
